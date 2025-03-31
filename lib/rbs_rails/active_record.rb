@@ -56,8 +56,11 @@ module RbsRails
         pk = klass.primary_key
         return 'top' unless pk
 
-        col = klass.columns.find {|col| col.name == pk }
-        sql_type_to_class(col.type)
+        if pk.is_a?(Array)
+          pk.map { |p| sql_type_to_class(klass.columns.find { |col| col.name == p }.type) }.join(', ')
+        else
+          sql_type_to_class(klass.columns.find { |col| col.name == pk }.type)
+        end
       end
 
       private def generated_relation_methods_decl
