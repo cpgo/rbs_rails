@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_14_110904) do
+ActiveRecord::Schema.define(version: 2025_03_31_002345) do
+
+  create_table "blog_users", primary_key: ["user_id", "blog_id"], force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "blog_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["blog_id"], name: "index_blog_users_on_blog_id"
+    t.index ["user_id"], name: "index_blog_users_on_user_id"
+  end
 
   create_table "blogs", force: :cascade do |t|
     t.string "title", null: false
@@ -29,8 +38,11 @@ ActiveRecord::Schema.define(version: 2021_04_14_110904) do
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.integer "age", null: false
+    t.string "status", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "blog_users", "blogs"
+  add_foreign_key "blog_users", "users"
 end
